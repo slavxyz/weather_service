@@ -25,3 +25,6 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 COPY docker/apache/vhost.conf /etc/apache2/sites-available/000-default.conf
 
 WORKDIR /var/www/html
+
+COPY docker/php/entrypoint.sh /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
