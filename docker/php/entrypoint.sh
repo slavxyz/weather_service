@@ -8,4 +8,7 @@ if [ ! -d vendor ]; then
     composer install --no-interaction
 fi
 
+php bin/console doctrine:migrations:migrate --no-interaction 
+php bin/console doctrine:fixtures:load --no-interaction 
+
 exec apache2-foreground
