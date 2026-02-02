@@ -3,12 +3,11 @@ set -e
 
 cd /var/www/html
 
+# Install composer dependencies if missing
 if [ ! -d vendor ]; then
     echo "Installing composer dependencies..."
     composer install --no-interaction
 fi
 
-php bin/console doctrine:migrations:migrate --no-interaction 
-php bin/console doctrine:fixtures:load --no-interaction 
-
+# Start Apache
 exec apache2-foreground
