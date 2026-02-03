@@ -3,13 +3,13 @@
 namespace App\V1\Service\Weather; 
 
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 
 use App\V1\Exceptions\Service\Weather\CityNotSupportedException;
 use App\V1\Interfaces\Weather\GeocodingInterface;
+use Throwable;
 
 class GeocodingService implements GeocodingInterface
 {
@@ -41,11 +41,15 @@ class GeocodingService implements GeocodingInterface
 
         } catch (
             TransportExceptionInterface |
-            ClientExceptionInterface |
-            ServerExceptionInterface | 
-            RedirectionExceptionInterface $e
+            HttpExceptionInterface | 
+            RedirectionExceptionInterface |
+            Throwable $e
         ) {
-            throw new CityNotSupportedException("Unable to fetch coordinates for city $city");
+            throw new CityNotSupportedException(
+                "Unable to fetch coordinates for city $city: " . $e->getMessage(),
+                0,
+                $e 
+            );
         }
 
         if (!isset($data['results'][0]) ||

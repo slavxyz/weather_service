@@ -4,11 +4,12 @@ namespace App\V1\Service\Weather;
 
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
 
 use App\V1\Exceptions\Service\Weather\WeatherProviderUnavailableException;
 use App\V1\Interfaces\Weather\WeatherApiClientInterface;
+
+use Throwable;
 
 class WeatherApiClient implements WeatherApiClientInterface
 {
@@ -37,8 +38,8 @@ class WeatherApiClient implements WeatherApiClientInterface
             $data = $response->toArray();
         } catch (
             TransportExceptionInterface |
-            ClientExceptionInterface |
-            ServerExceptionInterface $e
+            HttpExceptionInterface |
+            Throwable $e
         ) {
             throw new WeatherProviderUnavailableException('Weather API unavailable');
         }
