@@ -20,7 +20,7 @@ class DailyWeatherFixtures extends Fixture implements DependentFixtureInterface
         for ($i = 0; $i < 10; $i++) {
             $day = (clone $today)->modify("-$i days");
 
-            for ($cityId = 1; $cityId <= 16; $cityId++) {
+            for ($cityId = 1; $cityId < 16; $cityId++) {
                 $city = $this->getReference('city_' . $cityId, City::class);
 
                 $temperature = match ($cityId) {
