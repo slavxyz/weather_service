@@ -47,7 +47,7 @@ composer install
 ### Configure database
 
 Edit .env
-Uncomment following line: 
+- Uncomment following line: 
 ```
 #DATABASE_URL="mysql://app:123456@127.0.0.1:3306/weather_db?serverVersion=8.0&sslMode=DISABLED"
 ```
