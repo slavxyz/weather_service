@@ -11,13 +11,19 @@ cd weather_service
 ## Start the project using Docker:
 
 ### Start service
+```
 docker compose up -d --build
+```
 
 ### Run migrations after 20 seconds  
+```
 docker compose exec apache php bin/console doctrine:migrations:migrate
+```
 
 ### Load fixtures
+```
 docker compose exec apache php bin/console doctrine:fixtures:load
+```
 
 ### Open the following link in your browser or in Postman to test the API:
 
@@ -47,6 +53,12 @@ Uncomment following line:
 and comment:  
 DATABASE_URL="mysql://app:123456@db:3306/weather_db?serverVersion=8.0&sslMode=DISABLED"
 
+### Create database
+
+```
+php bin/console doctrine:database:create
+```
+
 ### Run migrations 
 
 ```
@@ -60,11 +72,11 @@ php bin/console doctrine:fixtures:load --no-interaction
 
 ### Start symfony server
 ```
-symfomy serve
+symfomy serve -p 8080
 ```
 
 ### Open in browser
-http://localhost:8000
+http://localhost:8080
 
 ### Use curl
     curl http://localhost:8080/api/v1/cities/{city}/weather
