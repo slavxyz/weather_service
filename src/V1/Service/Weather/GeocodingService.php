@@ -9,6 +9,8 @@ use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 
 use App\V1\Exceptions\Service\Weather\CityNotSupportedException;
 use App\V1\Interfaces\Weather\GeocodingInterface;
+use App\V1\Domain\City\Coordinates;
+
 use Throwable;
 
 class GeocodingService implements GeocodingInterface
@@ -25,7 +27,7 @@ class GeocodingService implements GeocodingInterface
      * @param string $city
      * @return array
      */
-    public function getCoordinates(string $city): array
+    public function getCoordinates(string $city): Coordinates
     {
         $url = rtrim($this->baseGeocodingUrl, '/') . '/search';
 
@@ -58,9 +60,9 @@ class GeocodingService implements GeocodingInterface
             throw new CityNotSupportedException("City not found {$city}");
         }
 
-        return [
-            'lat' => (float) $data['results'][0]['latitude'],
-            'lon' => (float) $data['results'][0]['longitude'],
-        ];
+        return new Coordinates(
+            (float) $data['results'][0]['latitude'],
+            (float) $data['results'][0]['longitude']
+        );
     }
 }

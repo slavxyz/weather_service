@@ -4,6 +4,7 @@ namespace App\V1\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\V1\Repository\CityRepository;
+use App\V1\Domain\City\Coordinates;
 
 #[ORM\Entity(repositoryClass: CityRepository::class)]
 #[ORM\Table(name: 'cities')]
@@ -24,15 +25,36 @@ class City
     #[ORM\Column(type: 'decimal', precision: 9, scale: 6)]
     private float $longitude;
 
-    public function __construct(string $name, float $latitude, float $longitude)
+    private function __construct(string $name, Coordinates $coordinates)
     {
-        $this->name = $name;
-        $this->latitude = $latitude;
-        $this->longitude = $longitude;
+        $name = trim($name);
+
+        if ($name === '') {
+            throw new \InvalidArgumentException('City name cannot be empty');
+        }
+
+        $this->name = strtolower($name);
+        $this->latitude  = $coordinates->latitude();
+        $this->longitude = $coordinates->longitude();
     }
 
-    public function getId(): ?int { return $this->id; }
-    public function getName(): string { return $this->name; }
-    public function getLatitude(): float { return $this->latitude; }
-    public function getLongitude(): float { return $this->longitude; }
+    public static function create(string $name, Coordinates $coordinates): self
+    {
+        return new self($name, $coordinates);
+    }
+
+    public function coordinates(): Coordinates
+    {
+        return new Coordinates($this->latitude, $this->longitude);
+    }
+
+    public function name(): string
+    {
+        return $this->name;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 }

@@ -8,6 +8,7 @@ use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
 
 use App\V1\Exceptions\Service\Weather\WeatherProviderUnavailableException;
 use App\V1\Interfaces\Weather\WeatherApiClientInterface;
+use App\V1\Domain\City\Coordinates;
 
 use Throwable;
 
@@ -21,16 +22,16 @@ class WeatherApiClient implements WeatherApiClientInterface
     /**
      * Get current temperature of city
      *
-     * @param array $coords
+     * @param Coordinates $coords
      * @return void
      */    
-    public function getCurrentWeatherData(array $coords): array
+    public function getCurrentWeatherData(Coordinates $coords): array
     {
         try {
             $response = $this->client->request('GET', $this->baseWeatherUrl . 'forecast', [
                 'query' => [
-                    'latitude'        => $coords['lat'],
-                    'longitude'       => $coords['lon'],
+                    'latitude'        => $coords->latitude(),
+                    'longitude'       => $coords->longitude(),
                     'current_weather' => true,
                 ],
             ]);

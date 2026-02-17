@@ -18,25 +18,25 @@ class CityRepository extends ServiceEntityRepository
     }
 
     /**
-     * Returns city or create new record in city table
-     *
+     * Find name
+     * 
      * @param string $name
-     * @param array $coords
-     * @return City
+     * @return City|null
      */
-    public function findOrCreate(string $name, array $coords): City
+    public function findByName(string $name): ?City
     {
-        $city = $this->findOneBy(['name' => $name]);
+        return $this->findOneBy(['name' => strtolower($name)]);
+    }
 
-        if ($city) {
-            return $city;
-        }
-
-        $city = new City($name, $coords['lat'], $coords['lon']);
-
+    /**
+     * Add city
+     * 
+     * @param City $city
+     * @return void
+     */
+    public function add(City $city): void
+    {
         $this->em->persist($city);
         $this->em->flush();
-
-        return $city;
     }
 }
