@@ -20,19 +20,28 @@ services:
     App\:
         resource: "../src/"
         exclude:
-            - "../src/V1/Repository/*"
-    App\V1\Service\:
-        resource: "../src/V1/Service"
-    App\V1\Service\Weather\WeatherApiClient:
+            - "../src/V1/Domain/*/Repository/*"
+
+    App\V1\Application\:
+        resource: "../src/V1/Application"
+
+    App\V1\Infrastructure\:
+        resource: "../src/V1/Infrastructure"
+
+    App\V1\Domain\City\Repository\CityRepositoryInterface: '@App\V1\Infrastructure\City\CityRepository'
+
+    App\V1\Infrastructure\Cache\CacheInterface: '@App\V1\Infrastructure\Cache\RedisCacheService'
+
+    App\V1\Infrastructure\Weather\WeatherApiClient:
         arguments:
             $baseWeatherUrl: "%remote_weather_api.base_weather_api_url%"
-    App\V1\Service\Weather\GeocodingService:
+    App\V1\Infrastructure\City\GeocodingService:
         arguments:
             $baseGeocodingUrl: "%remote_weather_api.base_weather_geocoding_api_url%"
 
-    App\V1\Repository\:
-        resource: "../src/V1/Repository"
-        tags: ["doctrine.repository_service"]
+    # App\V1\Repository\:
+    #     resource: "../src/V1/Repository"
+    #     tags: ["doctrine.repository_service"]
 
     App\V1\Controller\:
         resource: "../src/V1/Controller"

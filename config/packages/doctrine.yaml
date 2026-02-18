@@ -19,8 +19,8 @@ doctrine:
             App:
                 type: attribute
                 is_bundle: false
-                dir: "%kernel.project_dir%/src/V1/Entity"
-                prefix: 'App\V1\Entity'
+                dir: "%kernel.project_dir%/src/V1/Domain"
+                prefix: 'App\V1\Domain'
                 alias: App
         controller_resolver:
             auto_mapping: false
